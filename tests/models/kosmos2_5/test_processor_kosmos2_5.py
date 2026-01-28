@@ -46,6 +46,29 @@ class Kosmos2_5ProcessorTest(ProcessorTesterMixin, unittest.TestCase):
     images_input_name = "flattened_patches"
     model_id = "microsoft/kosmos-2.5"
 
+    @require_torch
+    def _test_apply_chat_template(
+        self,
+        modality: str,
+        batch_size: int,
+        return_tensors: str,
+        input_name: str,
+        processor_name: str,
+        input_data: list[str],
+    ):
+        processor = self.get_processor()
+        if processor.chat_template is None:
+            raise ValueError(f"Processor has no chat template: {processor.chat_template = }")
+
+        super()._test_apply_chat_template(
+            modality,
+            batch_size,
+            return_tensors,
+            input_name,
+            processor_name,
+            input_data,
+        )
+
     @unittest.skip("Kosmos2_5Processor removes 'rows' and 'cols' from the output")
     def test_image_processor_defaults(self):
         pass
